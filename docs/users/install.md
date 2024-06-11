@@ -16,102 +16,18 @@ If you only have a small amount of users and have no experience, its best to sti
 
 
 ## Getting Ready
-There are several ways of installing Web Portal. The recommended method is through the official Docker image.
+There are several ways of installing Web Portal. ~~The recommended method is through the official Docker image.~~
 
-### With Docker (Recommended)
-Now we can configure web-portal. We can do this using Docker Compose. So we will need to create a compose file.
-
-This file should be placed in a directory where you are going to store all your app data. The following is an example of your directory layout:
-
-```
-web_portal/
-    docker-compose.yml
-    data/
-    plugins/
-```
-
-### Example Compose File
-This is an example config (using SQLite) which you can copy, as long as `SECRET_KEY` value is changed for security.
-
-> Config values explained in "Configuration" section
-
-```yaml
-version: "3"
-
-services:
-  web-portal:
-    container_name: web-portal
-    image: ghcr.io/enchant97/web-portal:2
-    restart: unless-stopped
-    volumes:
-      - ./data:/app/data
-      # Uncomment if you want custom plugins
-      # - ./plugins:/app/plugins
-    ports:
-      # Change only left side
-      - 8000:8000
-    environment:
-      # This config is built into the Docker image
-      # - "DATA_PATH=/app/data"
-      - "DB_URI=sqlite:///app/data/db.sqlite"
-      # This must be secure
-      - "SECRET_KEY=replace_me_123"
-```
+### With Docker ~~(Recommended)~~
+Fuck Docker.
 
 ### Without Docker
-While this is not the recommended method, it is possible and perfectly fine to run Web Portal without Docker.
+~~While this is not the recommended method, it is possible and perfectly fine to run Web Portal without Docker.~~
 
-> Commands shown will assume a GNU/Linux based system is being used
+Docker is ass, install scripts much better! Currently only Debian-based, will expand to other distros if I feel like it.
+The script will create a `web-portal` directory based on your `PWD` when you run the script.
 
-> Config values explained in "Configuration" section
-
-
-```bash
-#!/usr/bin/env bash
-export WEB_PORTAL_VERSION=2.3.1
-#
-# Setup Environment
-#
-mkdir web-portal
-
-cd web-portal
-
-mkdir -p data
-mkdir -p plugins
-
-#
-# Install/Update App
-#
-rm -rf .venv
-
-python -m venv .venv
-
-source .venv/bin/activate
-
-git clone --depth=1 --branch=v${WEB_PORTAL_VERSION} https://github.com/enchant97/web-portal.git app-src
-
-python -m pip install ./app-src
-
-#
-# Get Default Plugins
-#
-rsync -a app-src/plugins/ plugins
-
-#
-# Cleanup
-#
-rm -rf app-src
-```
-
-```bash
-# filepath: web-portal/.env
-
-PLUGINS_PATH="./plugins"
-DATA_PATH="./data"
-DB_URI="sqlite://data/db.sqlite"
-SECRET_KEY="replace_me_123"
-```
-
+`curl https://raw.githubusercontent.com/stormvansoldt/web-portal/main/scripts/linux-install.sh | bash`
 
 ## Configuration
 All configs shown here should be given as environment variables, or in a `.env` file.
@@ -167,17 +83,8 @@ Other configs related to when running through the official docker image:
 ## Run
 Now configurations have been done, you can move on to running Web Portal for the first time.
 
-### With Docker (Recommended)
-Inside the app directory, run these commands
-
-> Running `docker compose pull` ensures you have the latest specified in the compose file
-
-> The `-d` argument runs the app in the background
-
-```
-docker compose pull
-docker compose up -d
-```
+### With Docker ~~(Recommended)~~
+Fuck Docker.
 
 ### Without Docker
 After following the "Getting Ready" section, you can launch the app using Hypercorn.
